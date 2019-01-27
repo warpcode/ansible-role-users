@@ -18,7 +18,7 @@
     ssh_key_passphrase: "{{ item.ssh_key_password | default(omit) }}"
     ssh_key_bits: "{{ item.ssh_key_bits | default(users_ssh_key_bits) }}"
     createhome: "{{ item.home_create | default(omit) }}"
-    shell: "{{ item.shell | default(omit) }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
     update_password: "{{ item.update_password | default(omit) }}"
   with_items: "{{ users }}"
 
