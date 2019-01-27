@@ -42,6 +42,19 @@
     - flags:
       skip_missing: True
 
+- name: Adding user's ssh public keys
+  copy:
+    content: "{{ item.1.key }}"
+    dest: "{{ item.0.home | default(users_home ~ '/' ~ item.0.username) }}/.ssh/{{ item.1.prefix }}_{{ item.1.key_type | default('rsa') }}.pub"
+    owner: "{{ item.0.username }}"
+    group: "{{ item.0.group if item.0.group is defined else (users_group if users_group else item.0.username) }}"
+  when: item.0.home_create is not defined or item.0.home_create
+  with_subelements:
+    - "{{ users }}"
+    - ssh_public_keys
+    - flags:
+      skip_missing: True
+
 - name: Adding user's authorized keys
   authorized_key:
     key: "{{ item.1.key | default(item.1) }}"
