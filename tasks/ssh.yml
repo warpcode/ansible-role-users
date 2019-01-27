@@ -10,8 +10,8 @@
   with_items: "{{ users }}"
 
 - name: Adding user's private key
-  template:
-    src: home/user/ssh/private-key.j2
+  copy:
+    content: "{{ item.ssh_key | default('') }}"
     dest: "{{ item.home | default(users_home ~ '/' ~ item.username) }}/.ssh/id_{{ item.ssh_key_type | default('rsa') }}"
     owner: "{{ item.username }}"
     group: "{{ item.group if item.group is defined else (users_group if users_group else item.username) }}"
@@ -20,8 +20,8 @@
   with_items: "{{ users }}"
 
 - name: Adding user's public key
-  template:
-    src: home/user/ssh/public-key.j2
+  copy:
+    content: "{{ item.ssh_key_public | default('') }}"
     dest: "{{ item.home | default(users_home ~ '/' ~ item.username) }}/.ssh/id_{{ item.ssh_key_type | default('rsa') }}.pub"
     owner: "{{ item.username }}"
     group: "{{ item.group if item.group is defined else (users_group if users_group else item.username) }}"
