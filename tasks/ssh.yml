@@ -31,7 +31,7 @@
 
 - name: Adding user's authorized keys
   authorized_key:
-    key: "{{ item.1 }}"
+    key: "{{ item.1.key | default(item.1) }}"
     user: "{{ item.0.username }}"
     exclusive: "{{ item.0.authorized_keys_exclusive | default(users_authorized_keys_exclusive) }}"
   when: item.0.home_create is not defined or item.0.home_create
