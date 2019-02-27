@@ -10,3 +10,13 @@
     name: "{{ item }}"
     state: present
   with_items: "{{ users_groups | default([]) }}"
+
+- name: Adding secondary groups defined by users
+  group:
+    name: "{{ item.1 }}"
+    state: present
+  with_subelements:
+    - "{{ users }}"
+    - groups
+    - flags:
+      skip_missing: True
