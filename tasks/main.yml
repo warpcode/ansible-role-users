@@ -25,8 +25,8 @@
 - name: Setting user's home permission
   file:
     dest: "{{ item.home | default(users_home ~ '/' ~ item.username) }}"
-    owner: "{{ item.username }}"
-    group: "{{ item.group if item.group is defined else (users_group if users_group else item.username) }}"
+    owner: "{{ item.home_owner if item.home_owner is defined else item.username }}"
+    group: "{{ item.home_group if item.home_group is defined else (item.group if item.group is defined else (users_group if users_group else item.username)) }}"
     mode: "{{ item.home_mode if item.home_mode is defined else users_home_mode }}"
   when: item.home_create is not defined or item.home_create
   with_items: "{{ users }}"
@@ -42,6 +42,18 @@
   with_subelements:
     - "{{ users }}"
     - home_files
+    - skip_missing: yes
+
+- name: Adding user's home directories
+  file:
+    dest: "{{ item.0.home | default(users_home ~ '/' ~ item.0.username) }}/{{ item.1.name | default(item.1) }}"
+    owner: "{{ item.0.username }}"
+    group: "{{ item.0.group if item.0.group is defined else (users_group if users_group else item.0.username) }}"
+    mode: "{{ item.1.mode | default(omit) }}"
+    state: directory
+  with_subelements:
+    - "{{ users }}"
+    - home_directories
     - skip_missing: yes
 
 - name: Removing users

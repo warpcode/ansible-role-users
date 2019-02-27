@@ -11,7 +11,13 @@
 #     password: xxxxx               (a hash created with: mkpasswd)
 #     groups: ["adm", "www-data"]
 #     append: no                    (only append groups, leave others)
+#     home_owner: root              (custom owner for home dir. Useful for sftp)
+#     home_group: root              (custom group for home dir. Useful for sftp)
 #     home_mode: "0750"
+#     home_directories:
+#       - test
+#       - name: another_test
+#         mode: 777    
 #     home_create: yes
 #     home: /path/to/user/home
 #     home_files:
