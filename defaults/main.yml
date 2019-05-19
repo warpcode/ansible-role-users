@@ -47,7 +47,7 @@ users_group:
 # default user's secondary groups
 users_groups: []
 # default user's home directory permissions
-users_home_mode: "0755"
+users_home_mode: "0750"
 # default user's ssh key type
 users_ssh_key_type: rsa
 # default user's ssh key bits
